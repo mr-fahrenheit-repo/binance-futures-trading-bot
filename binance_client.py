@@ -1,0 +1,266 @@
+# Import Libraries 
+import os
+import pytz
+import talib as ta
+import pandas as pd
+from binance.client import Client
+from customized import take_profit
+from customized import caps
+
+# proxies for client API net
+proxies = {
+    'http': 'http://10.10.1.10:3128',
+    'https': 'http://10.10.1.10:1080'
+}
+
+# Binance API
+binance_api = os.getenv('binance_api_key')
+binance_secret = os.getenv('binance_secret_key')
+
+# Set binance API Client
+client = Client(binance_api, binance_secret,{"verify": False, "timeout": 100}, {'proxies': proxies}, testnet = True)
+client.API_TESTNET_URL = 'https://testnet.binancefuture.com/'
+
+# Getting all the stock with USDT pair symbol in a list
+def stock_list():
+  info = client.futures_exchange_info()
+  df_info = pd.DataFrame(info['symbols'])
+  df_info = df_info[df_info['symbol'].str.contains('USDT')]
+  stock_list =  list(df_info["symbol"])
+  stock_list = [x for x in stock_list if x[-4:] == 'USDT']
+  return stock_list
+
+# Getting all the stock with non-USDT pair symbol in a list
+def non_stock_list():
+  info = client.futures_exchange_info()
+  df_info = pd.DataFrame(info['symbols'])
+  stock_list =  list(df_info["symbol"])
+  non_stock_list = [x for x in stock_list if x[-4:] != 'USDT']
+  return non_stock_list
+
+# Stock list pair data information 
+def pair_info():
+  ex_info = client.futures_exchange_info()
+  df_ex_info = pd.DataFrame(ex_info['symbols'])
+  df_filters = pd.DataFrame(list(df_ex_info['filters']))
+  filters = pd.DataFrame(list(df_filters[0]))
+  tick = pd.DataFrame(list(df_filters[1]))
+  data = df_ex_info [['symbol','pricePrecision','quantityPrecision','timeInForce']]
+  data = pd.concat([data, tick, filters], axis = 1)
+  pos_info = client.futures_position_information()
+  df_pos_info = pd.DataFrame(pos_info)
+  df_pos_info = df_pos_info[['symbol','leverage', 'marginType']]
+  df_pos_info = df_pos_info.set_index(df_pos_info['symbol'])
+  df_pos_info = df_pos_info.loc[list(data['symbol'])]
+  df_pos_info = df_pos_info.reset_index(drop=True)
+  data = pd.concat([data, df_pos_info], axis = 1)
+  data = data.loc[:,~data.columns.duplicated()].copy()
+  data = data.set_index(data['symbol'])
+  data = data.drop(['symbol','filterType','stepSize','timeInForce','maxQty', 'minQty', 'minPrice', 'maxPrice', 'tickSize'], axis =1 )
+  data = data.drop(non_stock_list())
+  return data
+
+# pairs leverage functions
+def call_leverage(symbol):
+  df = pair_info()
+  df = df[['leverage']]
+  x = int(df.loc[symbol,'leverage'])
+  return x
+
+# price precission functions
+def price_precision(symbol):
+  x = pair_info()
+  x = int(x.loc[symbol]['pricePrecision'])
+  return x
+
+# quantity precission size functions
+def quantity_precision(symbol):
+  x = pair_info()
+  x = int(x.loc[symbol]['quantityPrecision'])
+  return x
+
+# Calling for account balance
+def my_balance():
+  data_balance = client.futures_account_balance()
+  balance = pd.DataFrame(data_balance)
+  balance = balance.drop(['updateTime'], axis = 1)
+  balance = balance.set_index('asset')
+  balance = balance['balance']['USDT']
+  balance = str(round(float(balance),2)) + "USDT"
+  return balance
+
+# Market price functions
+def market_price(symbol):
+  x = client.futures_ticker(symbol=symbol)
+  x = round(float(x['lastPrice']),price_precision(symbol))
+  return x
+
+# Change leverage for every stock pair
+def leverage_change(symbol):
+  for lev_range in range(20,100,5) :
+      try:
+        client.futures_change_leverage(symbol = symbol, leverage = lev_range)
+      except:
+        pass
+      else: 
+        print("{} Leverage is {}".format(symbol, lev_range))
+        leverage = lev_range
+              
+  return leverage
+
+# Change Margin Type for every stock pair
+def change_margin(symbol):
+  try:
+    client.futures_change_margin_type(symbol = symbol, marginType = 'ISOLATED')
+  except:
+    print("Can't change margin type")
+  else:
+    print('Change margin type Success')
+    print('{} margin type is ISOLATED'.format(symbol))
+    
+# function for defining quantity
+def quantities(price, symbol):
+  leverage = call_leverage(symbol)
+  init_caps = caps
+  quantity = leverage * init_caps
+  quantity = round(float(quantity / price),quantity_precision(symbol))
+  return quantity
+
+# Create Buy Order functions
+def buy_order(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'BUY',
+                                      type = 'MARKET',
+                                      quantity=quantities(market_price(symbol), symbol))
+  return order
+
+# Create Sell Order functions
+def sell_order(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'SELL',
+                                      type = 'MARKET',
+                                      quantity=quantities(market_price(symbol), symbol))
+  return order
+
+# Order price for the last trade
+def order_price_1(symbol):
+  x = client.futures_get_all_orders(symbol = symbol)
+  df = pd.DataFrame(x)
+  df = df.reset_index()
+  y = round(float(df.loc[df.index[-1],'avgPrice']),price_precision(symbol))
+  return y
+
+# Order price for the 2nd last trade
+def order_price_2(symbol):
+  x = client.futures_get_all_orders(symbol = symbol)
+  df = pd.DataFrame(x)
+  df = df.reset_index()
+  y = round(float(df.loc[df.index[-2],'avgPrice']),price_precision(symbol))
+  return y
+
+# Order quantity for the last trade
+def order_qty_1(symbol):
+  x = client.futures_get_all_orders(symbol = symbol)
+  df = pd.DataFrame(x)
+  df = df.reset_index()
+  y = float(df.loc[df.index[-1],'origQty'])
+  return y
+
+# Order quantity for 2nd the last trade
+def order_qty_2(symbol):
+  x = client.futures_get_all_orders(symbol = symbol)
+  df = pd.DataFrame(x)
+  df = df.reset_index()
+  y = float(df.loc[df.index[-2],'origQty'])
+  return y
+
+# Take profit for sell order
+def sell_take_profit(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'BUY',
+                                      type = 'TAKE_PROFIT_MARKET',
+                                      stopPrice = round(float(order_price_2(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      closePosition= True,
+                                      timeInForce = 'GTC')
+  return order
+
+# Stop loss for sell order
+def sell_stop_loss(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'BUY',
+                                      type = 'STOP_MARKET',
+                                      stopPrice = round(float(order_price_1(symbol)*(1 + (1/call_leverage(symbol)))),price_precision(symbol)),
+                                      closePosition= True,
+                                      timeInForce = 'GTC')
+  return order
+
+# Take profit for buy order
+def buy_take_profit(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'SELL',
+                                      type = 'TAKE_PROFIT_MARKET',
+                                      stopPrice = round(float(order_price_2(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      closePosition= True,
+                                      timeInForce = 'GTC')
+  return order
+
+# Stop loss for buy order
+def buy_stop_loss(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'SELL',
+                                      type = 'STOP_MARKET',
+                                      stopPrice = round(float(order_price_1(symbol)*(1 - (1/call_leverage(symbol)))),price_precision(symbol)),
+                                      closePosition= True,
+                                      timeInForce = 'GTC')
+  return order
+
+# Get the the data for 24 hours period
+def data_fetcher(stock_name):
+  # fetch the data from binance
+  crypto = client.futures_klines(symbol = stock_name, interval = client.KLINE_INTERVAL_5MINUTE , limit=308)
+
+  # Make columns names
+  columns =['datetime','open','high','low','close','volume', 'close time', 'quote asset volume', 'number of trade', 'taker buy base', 'taker buy', 'ignore']
+
+  # Convert the data into dataframe
+  df = pd.DataFrame(crypto, columns=columns)
+
+  # Convert datetime columns as datetime type
+  df['datetime'] = pd.to_datetime(df['datetime'], unit='ms')
+
+  # Convert OHLC columns into float
+  df[['open','high','low','close']] = df[['open','high','low','close']].astype(float)
+
+  # set datetime column as index
+  df= df.set_index('datetime')
+
+  # Convert Timezones
+  df = df.tz_localize(pytz.timezone('UTC'))
+  df.index = df.index.tz_convert('Asia/Jakarta')
+
+  # Reset dataframe index
+  df = df.reset_index()
+
+  # Remove the timezone stamp
+  df['datetime'] = df['datetime'].dt.tz_localize(None)
+
+  #Drop unnecessary columns
+  df = df.drop(['volume', 'close time', 'quote asset volume', 'number of trade', 'taker buy base', 'taker buy', 'ignore'], axis=1)
+
+  # set datetime column as index
+  df= df.set_index('datetime')
+
+  # Make ema indicator columns
+  df['ema'] = ta.EMA(df['close'], 9)
+
+  # Make ma indicator columns
+  df['ma'] = ta.MA(df['close'], 20)
+
+  # Make Parabolic SAR indicator columns
+  df['sar'] = ta.SAR(df['high'], df['low'], acceleration=0.02, maximum=0.2)
+
+  # Remove the first 20 columns with no ema, ma, & calc
+  df = df.iloc[20:]
+
+  return df
+
