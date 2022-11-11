@@ -189,7 +189,7 @@ def sell_stop_loss(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'BUY',
                                       type = 'STOP_MARKET',
-                                      stopPrice = round(float(order_price_1(symbol)*(1 + (1/call_leverage(symbol)))),price_precision(symbol)),
+                                      stopPrice = round(float(order_price_1(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       closePosition= True,
                                       timeInForce = 'GTC')
   return order
@@ -209,7 +209,7 @@ def buy_stop_loss(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'SELL',
                                       type = 'STOP_MARKET',
-                                      stopPrice = round(float(order_price_1(symbol)*(1 - (1/call_leverage(symbol)))),price_precision(symbol)),
+                                      stopPrice = round(float(order_price_1(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       closePosition= True,
                                       timeInForce = 'GTC')
   return order

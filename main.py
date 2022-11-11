@@ -30,7 +30,6 @@ from binance_client import sell_stop_loss
 # Make take profit order on Sell order
 from binance_client import sell_take_profit
 
-
 # Remove warning
 import warnings
 warnings.filterwarnings('ignore')
@@ -139,21 +138,32 @@ while True:
         countdown(150)
         buy_df = data_fetcher(symbol)
         if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
-          buy_order(symbol),
+          while True:
+            try:
+              buy_order(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
           countdown(60),
-          try:
-            buy_stop_loss(symbol)
-          except:
-            buy_stop_loss(symbol)
-          else:
-            pass
-          try:
-            buy_take_profit(symbol)
-          except:
-            buy_take_profit(symbol)
-          else:
-            pass
-          telegram_send('Signal confirm, BUY {} Now!!!'.format(symbol)),
+          while True:
+            try:
+              buy_stop_loss(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
+          while True:
+            try:
+              buy_take_profit(symbol)
+            except:
+              print('Failed to put Take Profit Order')
+              print('Retrying...')
+            else:
+              break
+          telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
           print('Buying {}'.format(symbol))
         else:
           print('Signal not confirm')
@@ -163,21 +173,32 @@ while True:
         countdown(150)
         buy_df = data_fetcher(symbol)
         if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
-          buy_order(symbol),
+          while True:
+            try:
+              buy_order(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
           countdown(60),
-          try:
-            buy_stop_loss(symbol)
-          except:
-            buy_stop_loss(symbol)
-          else:
-            pass
-          try:
-            buy_take_profit(symbol)
-          except:
-            buy_take_profit(symbol)
-          else:
-            pass
-          telegram_send('Signal confirm, BUY {} Now!!!'.format(symbol)),
+          while True:
+            try:
+              buy_stop_loss(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
+          while True:
+            try:
+              buy_take_profit(symbol)
+            except:
+              print('Failed to put Take Profit Order')
+              print('Retrying...')
+            else:
+              break
+          telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
           print('Buying {}'.format(symbol))
         else:
           print('Signal not confirm')
@@ -187,21 +208,32 @@ while True:
         countdown(150)
         sell_df = data_fetcher(symbol)
         if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
-          sell_order(symbol),
+          while True:
+            try:
+              sell_order(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
           countdown(60),
-          try:
-            sell_stop_loss(symbol)
-          except:
-            sell_stop_loss(symbol)
-          else:
-            pass
-          try:
-            sell_take_profit(symbol)
-          except:
-            sell_take_profit(symbol)
-          else:
-            pass
-          telegram_send('Signal confirm, SELL {} Now!!!'.format(symbol)),
+          while True:
+            try:
+              sell_stop_loss(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
+          while True:
+            try:
+              sell_take_profit(symbol)
+            except:
+              print('Failed to put Take Profit Order')
+              print('Retrying...')
+            else:
+              break
+          telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
           print('Selling {}'.format(symbol))
         else:
           print('Signal not confirm')
@@ -211,21 +243,32 @@ while True:
         countdown(150)
         sell_df = data_fetcher(symbol)
         if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
-          sell_order(symbol),
+          while True:
+            try:
+              sell_order(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
           countdown(60),
-          try:
-            sell_stop_loss(symbol)
-          except:
-            sell_stop_loss(symbol)
-          else:
-            pass
-          try:
-            sell_take_profit(symbol)
-          except:
-            sell_take_profit(symbol)
-          else:
-            pass
-          telegram_send('Signal confirm, SELL {} Now!!!'.format(symbol)),
+          while True:
+            try:
+              sell_stop_loss(symbol)
+            except:
+              print('Failed to put Stop Loss Order')
+              print('Retrying...')
+            else:
+              break
+          while True:
+            try:
+              sell_take_profit(symbol)
+            except:
+              print('Failed to put Take Profit Order')
+              print('Retrying...')
+            else:
+              break
+          telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
           print('Selling {}'.format(symbol))
         else:
           print('Signal not confirm')

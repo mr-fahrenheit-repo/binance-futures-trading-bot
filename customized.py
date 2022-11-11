@@ -2,8 +2,8 @@
 mybalance = 35 # float balance number
 
 # Captial per trade
-caps = 1.5 # float capital number number
+caps = round(float(mybalance/23.3333),2) # float capital number number
 
 # Profit percentage per trade 
 profit_percent = 90 # change this
-take_profit = float(profit_percent / 100)
+take_profit = round(float(profit_percent / 100),1)
