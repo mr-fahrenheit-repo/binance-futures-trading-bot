@@ -18,7 +18,7 @@ binance_api = os.getenv('binance_api_key')
 binance_secret = os.getenv('binance_secret_key')
 
 # Set binance API Client
-client = Client(binance_api, binance_secret,{"verify": False, "timeout": 100}, {'proxies': proxies}, testnet = True)
+client = Client(binance_api, binance_secret,{"verify": True, "timeout": 100}, {'proxies': proxies}, testnet = True)
 client.API_TESTNET_URL = 'https://testnet.binancefuture.com/'
 
 # Getting all the stock with USDT pair symbol in a list

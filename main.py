@@ -30,7 +30,6 @@ from binance_client import sell_stop_loss
 # Make take profit order on Sell order
 from binance_client import sell_take_profit
 
-from binance_client import my_balance
 
 # Remove warning
 import warnings

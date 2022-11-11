@@ -9,8 +9,8 @@ balance = 'Current balance : {}'.format(my_balance())
 bot = telebot.TeleBot(os.getenv('api_key_telegram'))
 
 # Message Handler
-@bot.message_handler(commands= ['balance'])
-def my_balance(message):
+@bot.message_handler(commands = ['balance'])
+def mybalance(message):
     bot.send_message(message.chat.id, balance)
 
 # Keep running script
