@@ -157,6 +157,17 @@ def order_quantity(symbol):
   quantity = round(float(df['positionAmt'][symbol]),quantity_precision(symbol))
   return quantity
 
+# Order price in active position
+def order_price(symbol):
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['positionAmt', 'entryPrice', 'unRealizedProfit', 'isolatedWallet']]= df[['positionAmt' , 'entryPrice','unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol','positionAmt' ,'entryPrice','unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  df = df.set_index(df['symbol'])
+  price = round(float(df['entryPrice'][symbol]),price_precision(symbol))
+  return price
+
 # List of active order 
 def order_list():
   x = client.futures_position_information()
@@ -199,45 +210,15 @@ def sell_order(symbol):
                                       quantity=quantities(market_price(symbol), symbol))
   return order
 
-# Order price for the last trade
-def order_price_1(symbol):
-  x = client.futures_get_all_orders(symbol = symbol)
-  df = pd.DataFrame(x)
-  df = df.reset_index()
-  y = round(float(df.loc[df.index[-1],'avgPrice']),price_precision(symbol))
-  return y
-
-# Order price for the 2nd last trade
-def order_price_2(symbol):
-  x = client.futures_get_all_orders(symbol = symbol)
-  df = pd.DataFrame(x)
-  df = df.reset_index()
-  y = round(float(df.loc[df.index[-2],'avgPrice']),price_precision(symbol))
-  return y
-
-# Order quantity for the last trade
-def order_qty_1(symbol):
-  x = client.futures_get_all_orders(symbol = symbol)
-  df = pd.DataFrame(x)
-  df = df.reset_index()
-  y = float(df.loc[df.index[-1],'origQty'])
-  return y
-
-# Order quantity for 2nd the last trade
-def order_qty_2(symbol):
-  x = client.futures_get_all_orders(symbol = symbol)
-  df = pd.DataFrame(x)
-  df = df.reset_index()
-  y = float(df.loc[df.index[-2],'origQty'])
-  return y
-
 # Take profit for sell order
 def sell_take_profit(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'BUY',
-                                      type = 'TAKE_PROFIT_MARKET',
-                                      stopPrice = round(float(order_price_2(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
-                                      closePosition= True,
+                                      type = 'TAKE_PROFIT',
+                                      quantity = abs(order_quantity(symbol)),
+                                      price = order_price(symbol),
+                                      stopPrice = round(float(order_price(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
 
@@ -245,9 +226,11 @@ def sell_take_profit(symbol):
 def sell_stop_loss(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'BUY',
-                                      type = 'STOP_MARKET',
-                                      stopPrice = round(float(order_price_1(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
-                                      closePosition= True,
+                                      type = 'STOP',
+                                      quantity = abs(order_quantity(symbol)),
+                                      price = order_price(symbol),
+                                      stopPrice = round(float(order_price(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
 
@@ -255,9 +238,11 @@ def sell_stop_loss(symbol):
 def buy_take_profit(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'SELL',
-                                      type = 'TAKE_PROFIT_MARKET',
-                                      stopPrice = round(float(order_price_2(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
-                                      closePosition= True,
+                                      type = 'TAKE_PROFIT',
+                                      quantity = abs(order_quantity(symbol)),
+                                      price = order_price(symbol),
+                                      stopPrice = round(float(order_price(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
 
@@ -265,9 +250,11 @@ def buy_take_profit(symbol):
 def buy_stop_loss(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'SELL',
-                                      type = 'STOP_MARKET',
-                                      stopPrice = round(float(order_price_1(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
-                                      closePosition= True,
+                                      type = 'STOP',
+                                      quantity = abs(order_quantity(symbol)),
+                                      price = order_price(symbol),
+                                      stopPrice = round(float(order_price(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
 
