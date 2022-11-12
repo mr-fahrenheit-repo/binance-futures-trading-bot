@@ -30,6 +30,12 @@ from binance_client import sell_stop_loss
 # Make take profit order on Sell order
 from binance_client import sell_take_profit
 
+# PNL reached certain condition
+from binance_client import pnl_reached
+
+# Cancel all active order under PNL condition
+from binance_client import cancel_active_order
+
 # Remove warning
 import warnings
 warnings.filterwarnings('ignore')
@@ -272,6 +278,8 @@ while True:
           print('Selling {}'.format(symbol))
         else:
           print('Signal not confirm')
+      elif pnl_reached() ==  True:
+        cancel_active_order()         
       else:
         print('Scanning {} is done'.format(symbol))
   except:

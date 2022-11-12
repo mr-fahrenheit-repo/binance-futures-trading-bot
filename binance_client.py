@@ -271,6 +271,24 @@ def buy_stop_loss(symbol):
                                       timeInForce = 'GTC')
   return order
 
+# PNL >= total margin
+def pnl_reached():
+  x = total_pnl()
+  y = (total_margin() * 0.5)
+  if x == 0 and y == 0:
+    return False
+  else:
+    z = x >= y
+  return z
+
+# Cancel all active order under pnl_reached condition
+def cancel_active_order():
+  for i in order_list() :
+    if order_quantity(i) > 0:
+      cancel_buy_order(i)
+    else:
+      cancel_sell_order(i)
+
 # Get the the data for 24 hours period
 def data_fetcher(stock_name):
   # fetch the data from binance
