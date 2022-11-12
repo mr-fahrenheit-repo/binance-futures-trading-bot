@@ -126,6 +126,63 @@ def quantities(price, symbol):
   quantity = round(float(quantity / price),quantity_precision(symbol))
   return quantity
 
+#Total margin in active position
+def total_margin():
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['unRealizedProfit', 'isolatedWallet']]= df[['unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol', 'unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  margin = df['isolatedWallet'].sum()
+  return margin
+
+# Total UnRealized Profit in active position
+def total_pnl():
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['unRealizedProfit', 'isolatedWallet']]= df[['unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol', 'unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  pnl = df['unRealizedProfit'].sum()
+  return pnl
+
+# Order quantity in active position
+def order_quantity(symbol):
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['positionAmt', 'unRealizedProfit', 'isolatedWallet']]= df[['positionAmt' , 'unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol','positionAmt' ,'unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  df = df.set_index(df['symbol'])
+  quantity = round(float(df['positionAmt'][symbol]),quantity_precision(symbol))
+  return quantity
+
+# List of active order 
+def order_list():
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['positionAmt', 'unRealizedProfit', 'isolatedWallet']]= df[['positionAmt' , 'unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol','positionAmt' ,'unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  order_list = list(df['symbol'])
+  return order_list
+
+# Create Buy Order functions
+def cancel_buy_order(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'SELL',
+                                      type = 'MARKET',
+                                      quantity=order_quantity(symbol))
+  return order
+
+# Create Sell Order functions
+def cancel_sell_order(symbol):
+  order = client.futures_create_order(symbol = symbol,
+                                      side = 'BUY',
+                                      type = 'MARKET',
+                                      quantity=order_quantity(symbol))
+  return order
+
 # Create Buy Order functions
 def buy_order(symbol):
   order = client.futures_create_order(symbol = symbol,
