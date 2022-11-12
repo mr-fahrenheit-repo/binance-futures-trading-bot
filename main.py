@@ -168,7 +168,7 @@ while True:
             else:
               break
           telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
-          print('Buying {}'.format(symbol))
+          print('Buy LONG {}'.format(symbol))
         else:
           print('Signal not confirm')
       elif buy2() == True:
@@ -203,7 +203,7 @@ while True:
             else:
               break
           telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
-          print('Buying {}'.format(symbol))
+          print('Buy LONG {}'.format(symbol))
         else:
           print('Signal not confirm')
       elif sell1() == True:
@@ -238,7 +238,7 @@ while True:
             else:
               break
           telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
-          print('Selling {}'.format(symbol))
+          print('Buy SHORT {}'.format(symbol))
         else:
           print('Signal not confirm')
       elif sell2() == True:
@@ -273,13 +273,13 @@ while True:
             else:
               break
           telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
-          print('Selling {}'.format(symbol))
+          print('Buy SHORT {}'.format(symbol))
         else:
           print('Signal not confirm')
       elif pnl_reached() ==  True:
         cancel_active_order()         
       else:
-        print('Scanning {} is done'.format(symbol))
+        print('Scanning {}'.format(symbol))
   except:
     print('Process Failed')
     print('Retrying...')

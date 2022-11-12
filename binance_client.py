@@ -216,7 +216,7 @@ def sell_take_profit(symbol):
                                       side = 'BUY',
                                       type = 'TAKE_PROFIT',
                                       quantity = abs(order_quantity(symbol)),
-                                      price = order_price(symbol),
+                                      price = round(float(order_price(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       stopPrice = round(float(order_price(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       reduceOnly = True,
                                       timeInForce = 'GTC')
@@ -240,7 +240,7 @@ def buy_take_profit(symbol):
                                       side = 'SELL',
                                       type = 'TAKE_PROFIT',
                                       quantity = abs(order_quantity(symbol)),
-                                      price = order_price(symbol),
+                                      price = round(float(order_price(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       stopPrice = round(float(order_price(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
                                       reduceOnly = True,
                                       timeInForce = 'GTC')
