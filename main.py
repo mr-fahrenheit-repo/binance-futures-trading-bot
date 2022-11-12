@@ -1,5 +1,3 @@
-# Importing functions
-
 # Report exectution on telegram
 from notifications import telegram_send
 
