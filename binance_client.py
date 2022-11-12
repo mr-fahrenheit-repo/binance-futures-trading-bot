@@ -168,6 +168,17 @@ def order_price(symbol):
   price = round(float(df['entryPrice'][symbol]),price_precision(symbol))
   return price
 
+# check the order
+def check_order(symbol):
+  x = client.futures_position_information()
+  df = pd.DataFrame(x)
+  df[['positionAmt', 'entryPrice', 'unRealizedProfit', 'isolatedWallet']]= df[['positionAmt' , 'entryPrice','unRealizedProfit', 'isolatedWallet']].astype(float)
+  df = df[['symbol','positionAmt' ,'entryPrice','unRealizedProfit', 'isolatedWallet']]
+  df = df.loc[df['isolatedWallet'].values > 0 ]
+  df = df.set_index(df['symbol'])
+  check = symbol in df.index
+  return check
+
 # List of active order 
 def order_list():
   x = client.futures_position_information()

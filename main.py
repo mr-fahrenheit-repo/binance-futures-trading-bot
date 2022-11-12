@@ -34,6 +34,9 @@ from binance_client import pnl_reached
 # Cancel all active order under PNL condition
 from binance_client import cancel_active_order
 
+# Checking the latest order
+from binance_client import check_order
+
 # Remove warning
 import warnings
 warnings.filterwarnings('ignore')
@@ -151,22 +154,28 @@ while True:
             else:
               break
           countdown(120),
-          while True:
-            try:
-              buy_stop_loss(symbol)
-            except:
-              print('Failed to put Stop Loss Order')
-              print('Retrying...')
-            else:
-              break
-          while True:
-            try:
-              buy_take_profit(symbol)
-            except:
-              print('Failed to put Take Profit Order')
-              print('Retrying...')
-            else:
-              break
+          if check_order(symbol) == True:
+            while True:
+              try:
+                buy_stop_loss(symbol)
+              except:
+                print('Failed to put Stop Loss Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
+          if check_order(symbol) == True:
+            while True:
+              try:
+                buy_take_profit(symbol)
+              except:
+                print('Failed to put Take Profit Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
           telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
           print('Buy LONG {}'.format(symbol))
         else:
@@ -186,22 +195,28 @@ while True:
             else:
               break
           countdown(120),
-          while True:
-            try:
-              buy_stop_loss(symbol)
-            except:
-              print('Failed to put Stop Loss Order')
-              print('Retrying...')
-            else:
-              break
-          while True:
-            try:
-              buy_take_profit(symbol)
-            except:
-              print('Failed to put Take Profit Order')
-              print('Retrying...')
-            else:
-              break
+          if check_order(symbol) == True:
+            while True:
+              try:
+                buy_stop_loss(symbol)
+              except:
+                print('Failed to put Stop Loss Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
+          if check_order(symbol) == True:
+            while True:
+              try:
+                buy_take_profit(symbol)
+              except:
+                print('Failed to put Take Profit Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
           telegram_send('Signal confirm, {} BUY LONG NOW !!!'.format(symbol)),
           print('Buy LONG {}'.format(symbol))
         else:
@@ -221,22 +236,28 @@ while True:
             else:
               break
           countdown(120),
-          while True:
-            try:
-              sell_stop_loss(symbol)
-            except:
-              print('Failed to put Stop Loss Order')
-              print('Retrying...')
-            else:
-              break
-          while True:
-            try:
-              sell_take_profit(symbol)
-            except:
-              print('Failed to put Take Profit Order')
-              print('Retrying...')
-            else:
-              break
+          if check_order(symbol) == True:
+            while True:
+              try:
+                sell_stop_loss(symbol)
+              except:
+                print('Failed to put Stop Loss Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
+          if check_order(symbol) == True:
+            while True:
+              try:
+                sell_take_profit(symbol)
+              except:
+                print('Failed to put Take Profit Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
           telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
           print('Buy SHORT {}'.format(symbol))
         else:
@@ -256,22 +277,28 @@ while True:
             else:
               break
           countdown(120),
-          while True:
-            try:
-              sell_stop_loss(symbol)
-            except:
-              print('Failed to put Stop Loss Order')
-              print('Retrying...')
-            else:
-              break
-          while True:
-            try:
-              sell_take_profit(symbol)
-            except:
-              print('Failed to put Take Profit Order')
-              print('Retrying...')
-            else:
-              break
+          if check_order(symbol) == True:
+            while True:
+              try:
+                sell_stop_loss(symbol)
+              except:
+                print('Failed to put Stop Loss Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
+          if check_order(symbol) == True:
+            while True:
+              try:
+                sell_take_profit(symbol)
+              except:
+                print('Failed to put Take Profit Order')
+                print('Retrying...')
+              else:
+                break
+          else:
+            pass
           telegram_send('Signal confirm, {} BUY SHORT NOW !!!'.format(symbol)),
           print('Buy SHORT {}'.format(symbol))
         else:
