@@ -146,11 +146,11 @@ while True:
             try:
               buy_order(symbol)
             except:
-              print('Failed to put Stop Loss Order')
+              print('Failed to put LONG Order')
               print('Retrying...')
             else:
               break
-          countdown(60),
+          countdown(120),
           while True:
             try:
               buy_stop_loss(symbol)
@@ -181,11 +181,11 @@ while True:
             try:
               buy_order(symbol)
             except:
-              print('Failed to put Stop Loss Order')
+              print('Failed to put LONG Order')
               print('Retrying...')
             else:
               break
-          countdown(60),
+          countdown(120),
           while True:
             try:
               buy_stop_loss(symbol)
@@ -216,11 +216,11 @@ while True:
             try:
               sell_order(symbol)
             except:
-              print('Failed to put Stop Loss Order')
+              print('Failed to put SHORT Order')
               print('Retrying...')
             else:
               break
-          countdown(60),
+          countdown(120),
           while True:
             try:
               sell_stop_loss(symbol)
@@ -251,11 +251,11 @@ while True:
             try:
               sell_order(symbol)
             except:
-              print('Failed to put Stop Loss Order')
+              print('Failed to put SHORT Order')
               print('Retrying...')
             else:
               break
-          countdown(60),
+          countdown(120),
           while True:
             try:
               sell_stop_loss(symbol)
