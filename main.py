@@ -156,6 +156,7 @@ while True:
               print('Retrying...')
             else:
               telegram_send('Buy LONG {} !!!'.format(symbol))
+              print('Buy LONG {} !!!'.format(symbol))
               break
           countdown(120),
           if check_order(symbol) == True:
@@ -167,6 +168,8 @@ while True:
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Stop Loss for {}, ordered'.format(symbol))
+                print('Stop Loss for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Stop Loss Order for {} can't be executed".format(symbol))
@@ -181,6 +184,8 @@ while True:
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Take Profit for {}, ordered'.format(symbol))
+                print('Take Profit for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Take profit Order for {} can't be executed".format(symbol))
@@ -202,6 +207,7 @@ while True:
               print('Retrying...')
             else:
               telegram_send('Buy LONG {} !!!'.format(symbol))
+              print('Buy LONG {} !!!'.format(symbol))
               break
           countdown(120),
           if check_order(symbol) == True:
@@ -213,6 +219,8 @@ while True:
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Stop Loss for {}, ordered'.format(symbol))
+                print('Stop Loss for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Stop Loss Order for {} can't be executed".format(symbol))
@@ -223,10 +231,12 @@ while True:
               try:
                 buy_take_profit(symbol)
               except:
-                print('Failed to put Stop Loss Order')
+                print('Failed to put Take Profit Order')
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Take Profit for {}, ordered'.format(symbol))
+                print('Take Profit for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Take profit Order for {} can't be executed".format(symbol))
@@ -248,6 +258,7 @@ while True:
               print('Retrying...')
             else:
               telegram_send('Buy SHORT {} !!!'.format(symbol))
+              print('Buy SHORT {} !!!'.format(symbol))
               break
           countdown(120),
           if check_order(symbol) == True:
@@ -259,6 +270,8 @@ while True:
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Stop Loss for {}, ordered'.format(symbol))
+                print('Stop Loss for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Stop Loss Order for {} can't be executed".format(symbol))
@@ -269,10 +282,12 @@ while True:
               try:
                 sell_take_profit(symbol)
               except:
-                print('Failed to put Stop Loss Order')
+                print('Failed to put Take Profit Order')
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Take Profit for {}, ordered'.format(symbol))
+                print('Take Profit for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Take profit Order for {} can't be executed".format(symbol))
@@ -294,6 +309,7 @@ while True:
               print('Retrying...')
             else:
               telegram_send('Buy SHORT {} !!!'.format(symbol))
+              print('Buy SHORT {} !!!'.format(symbol))
               break
           countdown(120),
           if check_order(symbol) == True:
@@ -305,6 +321,8 @@ while True:
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Stop Loss for {}, ordered'.format(symbol))
+                print('Stop Loss for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Stop Loss Order for {} can't be executed".format(symbol))
@@ -315,10 +333,12 @@ while True:
               try:
                 sell_take_profit(symbol)
               except:
-                print('Failed to put Stop Loss Order')
+                print('Failed to put Take Profit Order')
                 print('Retrying...')
                 continue
               else:
+                telegram_send('Take Profit for {}, ordered'.format(symbol))
+                print('Take Profit for {}, ordered'.format(symbol))
                 break
             else:
               telegram_send("Take profit Order for {} can't be executed".format(symbol))

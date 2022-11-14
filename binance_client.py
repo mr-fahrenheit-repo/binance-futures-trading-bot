@@ -252,7 +252,7 @@ def sell_stop_loss(symbol):
                                       type = 'STOP',
                                       quantity = abs(order_quantity(symbol)),
                                       price = order_price(symbol),
-                                      stopPrice = round(float(order_price(symbol)*(1 + (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      stopPrice = round(float(order_price(symbol)*(1 + (1/call_leverage(symbol)))),price_precision(symbol)),
                                       reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
@@ -276,7 +276,7 @@ def buy_stop_loss(symbol):
                                       type = 'STOP',
                                       quantity = abs(order_quantity(symbol)),
                                       price = order_price(symbol),
-                                      stopPrice = round(float(order_price(symbol)*(1 - (take_profit/call_leverage(symbol)))),price_precision(symbol)),
+                                      stopPrice = round(float(order_price(symbol)*(1 - (1/call_leverage(symbol)))),price_precision(symbol)),
                                       reduceOnly = True,
                                       timeInForce = 'GTC')
   return order
