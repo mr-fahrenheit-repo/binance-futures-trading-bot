@@ -90,7 +90,7 @@ def market_price(symbol):
 
 # Change leverage for every stock pair
 def leverage_change(symbol):
-  for lev_range in range(20,100,5) :
+  for lev_range in range(20,125,5) :
       try:
         client.futures_change_leverage(symbol = symbol, leverage = lev_range)
       except:
