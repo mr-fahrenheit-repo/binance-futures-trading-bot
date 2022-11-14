@@ -283,13 +283,10 @@ def buy_stop_loss(symbol):
 
 # PNL >= total margin
 def pnl_reached():
-  x = total_pnl()
-  y = (total_margin() * 0.5)
-  if x == 0 and y == 0:
-    return False
+  if total_pnl() >= (total_margin() * 0.5):
+    return True
   else:
-    z = x >= y
-  return z
+    return False
 
 # Cancel all active order under pnl_reached condition
 def cancel_active_order():
