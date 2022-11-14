@@ -148,16 +148,14 @@ while True:
         countdown(150)
         buy_df = data_fetcher(symbol)
         if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
-          while True:
-            try:
-              buy_order(symbol)
-            except:
-              print('Failed to put LONG Order')
-              print('Retrying...')
-            else:
-              telegram_send('Buy LONG {} !!!'.format(symbol))
-              print('Buy LONG {} !!!'.format(symbol))
-              break
+          try:
+            buy_order(symbol)
+          except:
+            print('Failed to put LONG Order')
+            print('Retrying...')
+          else:
+            telegram_send('Buy LONG {} !!!'.format(symbol))
+            print('Buy LONG {} !!!'.format(symbol))
           countdown(120),
           if check_order(symbol) == True:
             for i in range(10):
@@ -199,16 +197,14 @@ while True:
         countdown(150)
         buy_df = data_fetcher(symbol)
         if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
-          while True:
-            try:
-              buy_order(symbol)
-            except:
-              print('Failed to put LONG Order')
-              print('Retrying...')
-            else:
-              telegram_send('Buy LONG {} !!!'.format(symbol))
-              print('Buy LONG {} !!!'.format(symbol))
-              break
+          try:
+            buy_order(symbol)
+          except:
+            print('Failed to put LONG Order')
+            print('Retrying...')
+          else:
+            telegram_send('Buy LONG {} !!!'.format(symbol))
+            print('Buy LONG {} !!!'.format(symbol))
           countdown(120),
           if check_order(symbol) == True:
             for i in range(10):
@@ -250,16 +246,14 @@ while True:
         countdown(150)
         sell_df = data_fetcher(symbol)
         if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
-          while True:
-            try:
-              sell_order(symbol)
-            except:
-              print('Failed to put SHORT Order')
-              print('Retrying...')
-            else:
-              telegram_send('Buy SHORT {} !!!'.format(symbol))
-              print('Buy SHORT {} !!!'.format(symbol))
-              break
+          try:
+            sell_order(symbol)
+          except:
+            print('Failed to put SHORT Order')
+            print('Retrying...')
+          else:
+            telegram_send('Buy SHORT {} !!!'.format(symbol))
+            print('Buy SHORT {} !!!'.format(symbol))
           countdown(120),
           if check_order(symbol) == True:
             for i in range(10):
@@ -301,16 +295,14 @@ while True:
         countdown(150)
         sell_df = data_fetcher(symbol)
         if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
-          while True:
-            try:
-              sell_order(symbol)
-            except:
-              print('Failed to put SHORT Order')
-              print('Retrying...')
-            else:
-              telegram_send('Buy SHORT {} !!!'.format(symbol))
-              print('Buy SHORT {} !!!'.format(symbol))
-              break
+          try:
+            sell_order(symbol)
+          except:
+            print('Failed to put SHORT Order')
+            print('Retrying...')
+          else:
+            telegram_send('Buy SHORT {} !!!'.format(symbol))
+            print('Buy SHORT {} !!!'.format(symbol))
           countdown(120),
           if check_order(symbol) == True:
             for i in range(10):
