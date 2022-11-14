@@ -214,7 +214,7 @@ def cancel_sell_order(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'BUY',
                                       type = 'MARKET',
-                                      quantity=order_quantity(symbol))
+                                      quantity = order_quantity(symbol))
   return order
 
 # Create Buy Order functions
@@ -222,7 +222,7 @@ def buy_order(symbol):
   order = client.futures_create_order(symbol = symbol,
                                       side = 'BUY',
                                       type = 'MARKET',
-                                      quantity=quantities(market_price(symbol), symbol))
+                                      quantity = quantities(market_price(symbol), symbol))
   return order
 
 # Create Sell Order functions

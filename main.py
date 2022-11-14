@@ -351,7 +351,8 @@ while True:
         cancel_open_order()         
       else:
         print('Scanning {}'.format(symbol))
-  except:
+  except Exception as e:
+    print(e)
     print('Process Failed')
     print('Retrying...')
   else:
