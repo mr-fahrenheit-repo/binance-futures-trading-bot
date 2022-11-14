@@ -4,7 +4,7 @@ from binance_client import my_balance
 mybalance = my_balance()
 
 # Captial per trade
-caps = round(float(mybalance/23.3333),2) # float capital number number
+caps = round(float(mybalance/13.3333),2) # float capital number number
 
 # Profit percentage per trade 
 profit_percent = 66 # change this
