@@ -7,18 +7,12 @@ from binance.client import Client
 from customized import take_profit
 from customized import caps
 
-# proxies for client API net
-proxies = {
-    'http': 'http://10.10.1.10:3128',
-    'https': 'http://10.10.1.10:1080'
-}
-
 # Binance API
 binance_api = os.getenv('binance_api_key')
 binance_secret = os.getenv('binance_secret_key')
 
 # Set binance API Client
-client = Client(binance_api, binance_secret,{"verify": True, "timeout": 100}, {'proxies': proxies}, testnet = False)
+client = Client(binance_api, binance_secret)
 
 # Getting all the stock with USDT pair symbol in a list
 def stock_list():
