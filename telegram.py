@@ -1,9 +1,9 @@
 import os 
 import telebot
-from binance_client import my_balance
+from binance_client import my_balance_string
 
 # Balance in string format
-balance = 'Current balance : {}'.format(my_balance())
+balance = 'Current balance : {}'.format(my_balance_string())
 
 # Bot API KEY 
 bot = telebot.TeleBot(os.getenv('api_key_telegram'))
