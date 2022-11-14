@@ -72,26 +72,6 @@ def quantity_precision(symbol):
   x = int(x.loc[symbol]['quantityPrecision'])
   return x
 
-# Calling for account balance
-def my_balance():
-  data_balance = client.futures_account_balance()
-  balance = pd.DataFrame(data_balance)
-  balance = balance.drop(['updateTime'], axis = 1)
-  balance = balance.set_index('asset')
-  balance = balance['balance']['USDT']
-  balance = round(float(balance),2)
-  return balance
-
-# Calling for account balance string
-def my_balance_string():
-  data_balance = client.futures_account_balance()
-  balance = pd.DataFrame(data_balance)
-  balance = balance.drop(['updateTime'], axis = 1)
-  balance = balance.set_index('asset')
-  balance = balance['balance']['USDT']
-  balance = str(round(float(balance),2)) + "USDT"
-  return balance
-
 # Market price functions
 def market_price(symbol):
   x = client.futures_ticker(symbol=symbol)
