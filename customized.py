@@ -1,5 +1,7 @@
+from binance_client import my_balance
+
 # Account balance 
-mybalance = 35 # float balance number
+mybalance = my_balance()
 
 # Captial per trade
 caps = round(float(mybalance/23.3333),2) # float capital number number
