@@ -189,6 +189,18 @@ def order_list():
   order_list = list(df['symbol'])
   return order_list
 
+# create list of every open order
+def open_order_list():
+  x = client.futures_get_open_orders()
+  df = pd.DataFrame(x)
+  open_list = list(df['symbol'])
+  return open_list
+
+# canceling all open order list
+def cancel_open_order():
+  for i in open_order_list() :
+    client.futures_cancel_all_open_orders(symbol = i )
+
 # Create Buy Order functions
 def cancel_buy_order(symbol):
   order = client.futures_create_order(symbol = symbol,
