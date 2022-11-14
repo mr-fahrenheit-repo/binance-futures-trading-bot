@@ -7,5 +7,5 @@ for x in stock_list():
   leverage_change(x)
   
 # Change Margin type to Isolated
-for x in stock:
+for x in stock_list():
   change_margin(x)
