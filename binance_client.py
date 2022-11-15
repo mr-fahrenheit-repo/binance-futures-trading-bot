@@ -98,7 +98,7 @@ def my_balance():
 mybalance = my_balance()
 
 # Captial per trade
-caps = round(float(mybalance / 12.76), 2)  # float capital number number
+caps = round(float(mybalance / 10), 2)  # float capital number number
 
 # Profit percentage per trade
 profit_percent = 5  # change this
