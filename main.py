@@ -40,6 +40,9 @@ from binance_client import cancel_open_order
 # Checking the latest order
 from binance_client import check_order
 
+# Checking the latest order
+from binance_client import caps_confirm
+
 # Remove warning
 import warnings
 warnings.filterwarnings('ignore')
@@ -147,7 +150,7 @@ while True:
         print('Waiting for confirmation...'),
         countdown(150)
         buy_df = data_fetcher(symbol)
-        if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
+        if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True and caps_confirm() == True:
           try:
             buy_order(symbol)
           except:
@@ -196,7 +199,7 @@ while True:
         print('Waiting for confirmation...'),
         countdown(150)
         buy_df = data_fetcher(symbol)
-        if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True:
+        if buy_df['ema'].iloc[-1] > ema_1 and tx_confirm() == True and caps_confirm() == True:
           try:
             buy_order(symbol)
           except:
@@ -245,7 +248,7 @@ while True:
         print('Waiting for confirmation...'),
         countdown(150)
         sell_df = data_fetcher(symbol)
-        if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
+        if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True and caps_confirm() == True:
           try:
             sell_order(symbol)
           except:
@@ -294,7 +297,7 @@ while True:
         print('Waiting for confirmation...'),
         countdown(150)
         sell_df = data_fetcher(symbol)
-        if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True:
+        if sell_df['ema'].iloc[-1] < ema_1 and tx_confirm() == True and caps_confirm() == True:
           try:
             sell_order(symbol)
           except:
