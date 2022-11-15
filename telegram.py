@@ -1,6 +1,6 @@
 import os 
 import telebot
-from customized import my_balance_string
+from binance_client import my_balance_string
 
 # Balance in string format
 balance = 'Current balance : {}'.format(my_balance_string())
