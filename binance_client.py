@@ -364,7 +364,7 @@ def buy_stop_loss(symbol):
 
 # PNL >= total margin
 def pnl_reached():
-  if total_pnl() >= (total_margin() * 0.5):
+  if total_pnl() > (total_margin() * 0.5):
     return True
   else:
     return False
