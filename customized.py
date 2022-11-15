@@ -1,4 +1,3 @@
-from binance_client import my_balance
 import pandas as pd
 from binance_client import client
 
