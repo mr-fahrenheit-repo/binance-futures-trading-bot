@@ -93,12 +93,8 @@ def my_balance():
   balance = round(float(balance), 2)
   return balance
 
-
-# Account balance
-mybalance = my_balance()
-
 # Captial per trade
-caps = round(float(mybalance / 10), 2)  # float capital number number
+caps = round(float(my_balance() / 10), 2)  # float capital number number
 
 # Profit percentage per trade
 profit_percent = 5  # change this
@@ -361,14 +357,12 @@ def buy_stop_loss(symbol):
     timeInForce='GTC')
   return order
 
-
 # PNL >= total margin
 def pnl_reached():
-  if total_pnl() > (total_margin() * 0.075):
+  if total_pnl() > (my_balance() * 0.0075):
     return True
   else:
     return False
-
 
 # Cancel all active order under pnl_reached condition
 def cancel_active_order():
@@ -377,7 +371,6 @@ def cancel_active_order():
       cancel_buy_order(i)
     else:
       cancel_sell_order(i)
-
 
 # Get the the data for 24 hours period
 def data_fetcher(stock_name):
