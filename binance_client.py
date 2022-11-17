@@ -84,7 +84,7 @@ def my_balance():
 caps = round(float(my_balance() / 10), 2)  # float capital number number
 
 # Profit percentage per trade
-profit_percent = 5  # change this
+profit_percent = 0.2  # change this
 take_profit = round(float(profit_percent / 100), 1)
 
 # Confirming caps is enough for the trades
@@ -291,7 +291,7 @@ def buy_stop_loss(symbol):
 
 # PNL >= total margin
 def pnl_reached():
-  if total_pnl() > (my_balance() * 0.0075):
+  if total_pnl() > (my_balance() * 0.0055):
     return True
   else:
     return False
